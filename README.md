@@ -1,4 +1,5 @@
-# advent-of-code-2022
-Challenges for aoc 2022 (learning golang)
+# advent-of-code
+2022 learning golang
+2023 C
 
-This was the start of my AoC 2022, I didn't finished nor push every day I did but it was a try to learn a bit of golang and discover AoC format
+adventofcode.com
