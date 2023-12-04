@@ -8,8 +8,8 @@
 #define HEIGHT 140
 
 int extract_number(char *str, int j) {
-	for (; j >= 0 && isdigit(str[j]); --j);
-	if (j == 0)
+	for (; j && isdigit(str[j]); --j);
+	if (j == 0 && isdigit(str[j]))
 		return (atoi(&str[j]));
 	else
 		return (atoi(&str[j + 1]));
@@ -20,89 +20,93 @@ int gear_ratio(char **strs, int i, int j) {
 	int b = 0;
 	int tmp;
 	int valid = 0;
-	// Check left side
+	// Check top line
 	if (i > 0 && j > 0 && isdigit(strs[i - 1][j - 1])) {
 		tmp = extract_number(strs[i - 1], j - 1);
-		if (tmp != a && tmp != b)
-			++valid;
-		if (!a)
-			a = tmp;
-		else if (!b && tmp != a)
-			b = tmp;
+		++valid;
+		a = tmp;
 	}
-	if (i < HEIGHT - 1 && j > 0 && isdigit(strs[i + 1][j - 1])) {
-		tmp = extract_number(strs[i + 1], j - 1);
-		if (tmp != a && tmp != b)
-			++valid;
-		if (!a)
-			a = tmp;
-		else if (!b && tmp != a)
-			b = tmp;
-	}
-	if (j > 0 && isdigit(strs[i][j - 1])) {
-		tmp = extract_number(strs[i], j - 1);
-		if (tmp != a && tmp != b)
-			++valid;
-		if (!a)
-			a = tmp;
-		else if (!b && tmp != a)
-			b = tmp;
-	}
-	// Check top
 	if (i > 0 && isdigit(strs[i - 1][j])) {
 		tmp = extract_number(strs[i - 1], j);
-		if (tmp != a && tmp != b)
+		if (!a) {
 			++valid;
-		if (!a)
 			a = tmp;
-		else if (!b && tmp != a)
-			b = tmp;
-	}
-	// Check bottom
-	if (i < HEIGHT - 1 && isdigit(strs[i + 1][j])) {
-		tmp = extract_number(strs[i + 1], j);
-		if (tmp != a && tmp != b)
+		}
+		else if (!b && j > 0 && !isdigit(strs[i - 1][j - 1])) {
 			++valid;
-		if (!a)
-			a = tmp;
-		else if (!b && tmp != a)
 			b = tmp;
+		}
 	}
-	// Check right side
 	if (i > 0 && j < WIDTH - 1 && isdigit(strs[i - 1][j + 1])) {
 		tmp = extract_number(strs[i - 1], j + 1);
-		if (tmp != a && tmp != b)
+		if (!a) {
 			++valid;
-		if (!a)
 			a = tmp;
-		else if (!b && tmp != a)
+		}
+		else if (!b && j > 0 && !isdigit(strs[i - 1][j])) {
+			++valid;
 			b = tmp;
+		}
+	}
+	// Check middle line
+	if (j > 0 && isdigit(strs[i][j - 1])) {
+		tmp = extract_number(strs[i], j - 1);
+		if (!a) {
+			++valid;
+			a = tmp;
+		}
+		else if (!b && tmp != a) {
+			++valid;
+			b = tmp;
+		}
 	}
 	if (j < WIDTH - 1 && isdigit(strs[i][j + 1])) {
 		tmp = extract_number(strs[i], j + 1);
-		if (tmp != a && tmp != b)
+		if (!a) {
 			++valid;
-		if (!a)
 			a = tmp;
-		else if (!b && tmp != a)
+		}
+		else if (!b && tmp != a) {
+			++valid;
 			b = tmp;
+		}
+	}
+	// Check bottom line
+	if (i < HEIGHT - 1 && j > 0 && isdigit(strs[i + 1][j - 1])) {
+		tmp = extract_number(strs[i + 1], j - 1);
+		if (!a) {
+			++valid;
+			a = tmp;
+		}
+		else if (!b) {
+			++valid;
+			b = tmp;
+		}
+	}
+	if (i < HEIGHT - 1 && isdigit(strs[i + 1][j])) {
+		tmp = extract_number(strs[i + 1], j);
+		if (!a) {
+			++valid;
+			a = tmp;
+		}
+		else if (!b && j > 0 && !isdigit(strs[i + 1][j - 1])) {
+			++valid;
+			b = tmp;
+		}
 	}
 	if (i < HEIGHT - 1 &&  j < WIDTH - 1 && isdigit(strs[i + 1][j + 1])) {
 		tmp = extract_number(strs[i + 1], j + 1);
-		if (tmp != a && tmp != b)
+		if (!a) {
 			++valid;
-		if (!a)
 			a = tmp;
-		else if (!b && tmp != a)
+		}
+		else if (!b && !isdigit(strs[i + 1][j])) {
+			++valid;
 			b = tmp;
+		}
 	}
 	if (valid == 2) {
-		if (b == 0)
-			printf("b null\n");
-		if (a == 0)
-			printf("a null\n");
-		printf("%d %d\n", a, b);
-		// printf("a: %d, b: %d, ratio: %d\n", a, b, a * b);
+		// printf("%d %d\n", a, b);
 		return (a * b);
 	}
 	return (0);
@@ -181,7 +185,6 @@ int main(int ac, char **av) {
 	for (int i = 0; strs[i]; ++i)
 		free(strs[i]);
 
-	// printf("%d\n", count);
 	printf("%d\n", result);
 
 	return (EXIT_SUCCESS);
