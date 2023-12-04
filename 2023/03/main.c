@@ -27,7 +27,7 @@ int gear_ratio(char **strs, int i, int j) {
 			++valid;
 		if (!a)
 			a = tmp;
-		else if (!b)
+		else if (!b && tmp != a)
 			b = tmp;
 	}
 	if (i < HEIGHT - 1 && j > 0 && isdigit(strs[i + 1][j - 1])) {
@@ -36,7 +36,7 @@ int gear_ratio(char **strs, int i, int j) {
 			++valid;
 		if (!a)
 			a = tmp;
-		else if (!b)
+		else if (!b && tmp != a)
 			b = tmp;
 	}
 	if (j > 0 && isdigit(strs[i][j - 1])) {
@@ -45,7 +45,7 @@ int gear_ratio(char **strs, int i, int j) {
 			++valid;
 		if (!a)
 			a = tmp;
-		else if (!b)
+		else if (!b && tmp != a)
 			b = tmp;
 	}
 	// Check top
@@ -55,7 +55,7 @@ int gear_ratio(char **strs, int i, int j) {
 			++valid;
 		if (!a)
 			a = tmp;
-		else if (!b)
+		else if (!b && tmp != a)
 			b = tmp;
 	}
 	// Check bottom
@@ -65,7 +65,7 @@ int gear_ratio(char **strs, int i, int j) {
 			++valid;
 		if (!a)
 			a = tmp;
-		else if (!b)
+		else if (!b && tmp != a)
 			b = tmp;
 	}
 	// Check right side
@@ -75,7 +75,7 @@ int gear_ratio(char **strs, int i, int j) {
 			++valid;
 		if (!a)
 			a = tmp;
-		else if (!b)
+		else if (!b && tmp != a)
 			b = tmp;
 	}
 	if (j < WIDTH - 1 && isdigit(strs[i][j + 1])) {
@@ -84,7 +84,7 @@ int gear_ratio(char **strs, int i, int j) {
 			++valid;
 		if (!a)
 			a = tmp;
-		else if (!b)
+		else if (!b && tmp != a)
 			b = tmp;
 	}
 	if (i < HEIGHT - 1 &&  j < WIDTH - 1 && isdigit(strs[i + 1][j + 1])) {
@@ -93,7 +93,7 @@ int gear_ratio(char **strs, int i, int j) {
 			++valid;
 		if (!a)
 			a = tmp;
-		else if (!b)
+		else if (!b && tmp != a)
 			b = tmp;
 	}
 	if (valid == 2) {
@@ -101,6 +101,7 @@ int gear_ratio(char **strs, int i, int j) {
 			printf("b null\n");
 		if (a == 0)
 			printf("a null\n");
+		printf("%d %d\n", a, b);
 		// printf("a: %d, b: %d, ratio: %d\n", a, b, a * b);
 		return (a * b);
 	}
@@ -180,7 +181,7 @@ int main(int ac, char **av) {
 	for (int i = 0; strs[i]; ++i)
 		free(strs[i]);
 
-	printf("%d\n", count);
+	// printf("%d\n", count);
 	printf("%d\n", result);
 
 	return (EXIT_SUCCESS);
