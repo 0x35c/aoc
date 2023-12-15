@@ -49,19 +49,21 @@ static void parse_lenses(std::vector<std::string> &lenses, std::vector<std::vect
 			label += c;
 			k++;
 		}
+
 		int box_pos = hash_string(label);
 		std::vector<Lens> &box = boxes[box_pos];
-
 		if (lens[k] == '=') {
 			int pos = find_lens(box, label);
 			if (pos != -1) {
 				box[pos].label = label;
 				box[pos].focal = lens[k + 1] - '0';
-			} else {
+			}
+			else {
 				Lens lens_node = { label, lens[k + 1] - '0'};
 				box.push_back(lens_node);
 			}
-		} else {
+		}
+		else {
 			int pos = find_lens(box, label);
 			if (pos != -1)
 				box.erase(box.begin() + pos);
@@ -105,7 +107,8 @@ int main(void)
 			result += (i + 1) * (k + 1) * boxes[i][k].focal;
 		}
 	}
-	//
+
+	// This is part 1
 	// for (auto el : strings) {
 	// 	if (el.empty())
 	// 		continue;
