@@ -3,13 +3,9 @@
 #include <string.h>
 #include <string>
 
-static int mul(std::string input)
+static int mul(std::string a, std::string b)
 {
-	input.erase(0, 4);
-	int a = atoi(input.c_str());
-	input.erase(0, input.find(',') + 1);
-	int b = atoi(input.c_str());
-	return a * b;
+	return atoi(a.c_str()) * atoi(b.c_str());
 }
 
 int main(void)
@@ -35,7 +31,7 @@ int main(void)
 			else if (matches[0] == "do()")
 				operate = 1;
 			else if (operate)
-				result += mul(matches[0]);
+				result += mul(matches[1], matches[2]);
 			searchStart = matches.suffix().first;
 		}
 	}
