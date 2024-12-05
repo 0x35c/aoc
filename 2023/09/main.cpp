@@ -12,7 +12,7 @@ static bool check_zero(vector<int> values) {
 			return (false);
 	}
 	return (true);
-jflkasjflk;adj asd}
+}
 
 int main(void) {
 	int result = 0;

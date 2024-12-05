@@ -1,4 +1,4 @@
 #!/bin/bash
 
 mkdir $1
-cp template.c $1/main.c
+cp template.cpp $1/main.cpp
