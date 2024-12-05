@@ -7,6 +7,9 @@ typedef struct {
 	int y;
 } s_dir;
 
+const s_dir directions[8] = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1},
+                             {-1, 0},  {1, 0},  {0, -1}, {0, 1}};
+
 static char get_cell(const std::vector<std::string> &map, int x, int y)
 {
 	if (x < 0 || y < 0 || x >= map[0].size() || y >= map.size())
@@ -37,30 +40,10 @@ int main(void)
 		for (auto x = 0; x < map[y].size(); x++) {
 			if (map[y][x] != 'X')
 				continue;
-			if (get_cell(map, x - 1, y) == 'M')
-				result +=
-				    check_cell(map, x - 1, y, 'A', {-1, 0});
-			if (get_cell(map, x - 1, y - 1) == 'M')
-				result += check_cell(map, x - 1, y - 1, 'A',
-				                     {-1, -1});
-			if (get_cell(map, x, y - 1) == 'M')
-				result +=
-				    check_cell(map, x, y - 1, 'A', {0, -1});
-			if (get_cell(map, x + 1, y - 1) == 'M')
-				result +=
-				    check_cell(map, x + 1, y - 1, 'A', {1, -1});
-			if (get_cell(map, x + 1, y) == 'M')
-				result +=
-				    check_cell(map, x + 1, y, 'A', {1, 0});
-			if (get_cell(map, x + 1, y + 1) == 'M')
-				result +=
-				    check_cell(map, x + 1, y + 1, 'A', {1, 1});
-			if (get_cell(map, x, y + 1) == 'M')
-				result +=
-				    check_cell(map, x, y + 1, 'A', {0, 1});
-			if (get_cell(map, x - 1, y + 1) == 'M')
-				result +=
-				    check_cell(map, x - 1, y + 1, 'A', {-1, 1});
+			for (auto e : directions)
+				if (get_cell(map, x + e.x, y + e.y) == 'M')
+					result += check_cell(map, x + e.x,
+					                     y + e.y, 'A', e);
 		}
 	}
 
