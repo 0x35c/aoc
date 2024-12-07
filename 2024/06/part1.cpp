@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#define cell map[y][x]
+#define CELL() map[y][x]
 
 #define START                -1
 #define IVENEVERPUTMYASSHERE 0
@@ -33,8 +33,8 @@ static void move_guard(std::vector<std::vector<int>> &map, int x, int y)
 	while (1) {
 		switch (direction % 4) {
 		case UP: {
-			while (y >= 0 && cell != OBS) {
-				cell = IVEPUTMYASSHERE;
+			while (y >= 0 && CELL() != OBS) {
+				CELL() = IVEPUTMYASSHERE;
 				y--;
 			}
 			if (y < 0)
@@ -43,8 +43,8 @@ static void move_guard(std::vector<std::vector<int>> &map, int x, int y)
 			direction++;
 		}
 		case RIGHT: {
-			while (x < map[y].size() && cell != OBS) {
-				cell = IVEPUTMYASSHERE;
+			while (x < map[y].size() && CELL() != OBS) {
+				CELL() = IVEPUTMYASSHERE;
 				x++;
 			}
 			if (x >= map[y].size())
@@ -53,8 +53,8 @@ static void move_guard(std::vector<std::vector<int>> &map, int x, int y)
 			direction++;
 		}
 		case DOWN: {
-			while (y < map.size() && cell != OBS) {
-				cell = IVEPUTMYASSHERE;
+			while (y < map.size() && CELL() != OBS) {
+				CELL() = IVEPUTMYASSHERE;
 				y++;
 			}
 			if (y >= map.size())
@@ -63,8 +63,8 @@ static void move_guard(std::vector<std::vector<int>> &map, int x, int y)
 			direction++;
 		}
 		case LEFT: {
-			while (x >= 0 && cell != OBS) {
-				cell = IVEPUTMYASSHERE;
+			while (x >= 0 && CELL() != OBS) {
+				CELL() = IVEPUTMYASSHERE;
 				x--;
 			}
 			if (x < 0)
