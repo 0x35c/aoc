@@ -1,66 +1,122 @@
+#include "../utils.hpp"
 #include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
 
-static std::vector<int> split_to_int(const std::string &s, char sep)
-{
-	std::vector<int> array;
-	std::string e;
+#define CELL() map[y][x]
 
-	for (auto i = 0; s[i]; i++) {
-		if (s[i] == sep) {
-			if (!e.empty()) {
-				array.push_back(atoi(e.c_str()));
-				e.clear();
-			}
-			continue;
-		}
-		e += s[i];
+enum {
+	UP,
+	RIGHT,
+	DOWN,
+	LEFT,
+	START,
+	IVENEVERPUTMYASSHERE,
+	IVEPUTMYASSHERE,
+	OBS
+};
+
+static void fill_map(std::vector<std::vector<int>> &map, std::string input)
+{
+	std::vector<int> translated;
+	for (auto c : input) {
+		if (c == '.')
+			translated.push_back(IVENEVERPUTMYASSHERE);
+		else if (c == '#')
+			translated.push_back(OBS);
+		else if (c == '^')
+			translated.push_back(START);
 	}
-	if (!e.empty())
-		array.push_back(atoi(e.c_str()));
-	return array;
+	map.push_back(translated);
+}
+
+static int move_guard(std::vector<std::vector<int>> &map, int x, int y)
+{
+	int direction = UP;
+	int count = 0;
+
+	while (1) {
+		count++;
+		if (count >= 1000)
+			return 1;
+		switch (direction % 4) {
+		case UP: {
+			while (y >= 0 && CELL() != OBS) {
+				CELL() = IVEPUTMYASSHERE;
+				y--;
+			}
+			if (y < 0)
+				return 0;
+			y++;
+			direction++;
+		}
+		case RIGHT: {
+			while (x < map[y].size() && CELL() != OBS) {
+				CELL() = IVEPUTMYASSHERE;
+				x++;
+			}
+			if (x >= map[y].size())
+				return 0;
+			x--;
+			direction++;
+		}
+		case DOWN: {
+			while (y < map.size() && CELL() != OBS) {
+				CELL() = IVEPUTMYASSHERE;
+				y++;
+			}
+			if (y >= map.size())
+				return 0;
+			y--;
+			direction++;
+		}
+		case LEFT: {
+			while (x >= 0 && CELL() != OBS) {
+				CELL() = IVEPUTMYASSHERE;
+				x--;
+			}
+			if (x < 0)
+				return 0;
+			x++;
+			direction++;
+		}
+		}
+	}
 }
 
 int main(void)
 {
 	int result = 0;
 	std::string input;
-	std::vector<std::pair<int, int>> rules;
-	std::vector<std::vector<int>> pages;
+	std::vector<std::vector<int>> map;
 
 	while (std::getline(std::cin, input)) {
 		if (input.empty())
 			break;
-		int a = atoi(input.c_str());
-		input.erase(0, 3);
-		int b = atoi(input.c_str());
-		rules.push_back({a, b});
+		fill_map(map, input);
 	}
-	while (std::getline(std::cin, input))
-		pages.push_back(split_to_int(input, ','));
 
-	for (auto line : pages) {
-		bool uwu = false;
-		for (auto i = 0; i < line.size(); i++) {
-			for (auto rule : rules) {
-				auto a = std::find(line.begin(), line.end(),
-				                   rule.first);
-				auto b = std::find(line.begin(), line.end(),
-				                   rule.second);
-				if (a == line.end() || b == line.end())
-					continue;
-				if (a < b)
-					continue;
-				auto cramptés = *a;
-				line.erase(a);
-				line.insert(line.begin(), cramptés);
-				uwu = true;
+	int startX;
+	int startY;
+
+	for (auto y = 0; y < map.size(); y++) {
+		for (auto x = 0; x < map[y].size(); x++) {
+			if (map[y][x] == START) {
+				startX = x;
+				startY = y;
 			}
 		}
-		if (uwu)
-			result += line[line.size() / 2];
+	}
+
+	for (auto y = 0; y < map.size(); y++) {
+		for (auto x = 0; x < map[y].size(); x++) {
+			if (map[y][x] == IVENEVERPUTMYASSHERE) {
+				std::vector<std::vector<int>> clone = map;
+				clone[y][x] = OBS;
+				result += move_guard(clone, startX, startY);
+			}
+		}
 	}
 
 	printf("%d\n", result);
