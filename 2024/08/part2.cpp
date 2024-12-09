@@ -39,10 +39,12 @@ int main(void)
 				continue;
 			const int dirX = antennas[j].x - antennas[i].x;
 			const int dirY = antennas[j].y - antennas[i].y;
-			if (inside_map(map, antennas[j].x + dirX,
-			               antennas[j].y + dirY)) {
-				map[antennas[j].y + dirY]
-				   [antennas[j].x + dirX] = '#';
+			int x = antennas[j].x;
+			int y = antennas[j].y;
+			while (inside_map(map, x, y)) {
+				map[y][x] = '#';
+				x += dirX;
+				y += dirY;
 			}
 		}
 	}
