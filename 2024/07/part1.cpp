@@ -4,25 +4,19 @@
 #include <string>
 #include <vector>
 
-enum { MUL, ADD, CAT };
+enum { MUL, ADD };
 
 static bool operate(const long res, const std::vector<long> &line, long value,
                     int op, int depth)
 {
-	if (op == ADD) {
+	if (op == ADD)
 		value += line[depth];
-	} else if (op == MUL) {
+	else
 		value *= line[depth];
-	} else {
-		char buf[64];
-		sprintf(buf, "%ld%ld", value, line[depth]);
-		value = atol(buf);
-	}
 	if (depth == line.size() - 1)
 		return value == res;
 	return operate(res, line, value, ADD, depth + 1) ||
-	       operate(res, line, value, MUL, depth + 1) ||
-	       operate(res, line, value, CAT, depth + 1);
+	       operate(res, line, value, MUL, depth + 1);
 }
 
 int main(void)
