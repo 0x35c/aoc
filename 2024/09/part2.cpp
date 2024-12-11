@@ -1,5 +1,6 @@
 #include "../utils.hpp"
 #include <algorithm>
+#include <cstdlib>
 #include <iostream>
 #include <stdlib.h>
 #include <string>
@@ -20,13 +21,25 @@ int main(void)
 	for (auto i = disk.size() - 1; i > 0; i--) {
 		if (disk[i] == -1)
 			continue;
-		for (auto j = 0; j < disk.size(); j++) {
-			if (disk[j] == -1) {
+		int current = disk[i];
+		int amount = i;
+		while (i > 0 && current == disk[i])
+			i--;
+		amount -= i;
+		i++;
+		for (auto j = 0; j < disk.size() && j < i; j++) {
+			const int pos = j;
+			while (disk[j] == -1 && j < disk.size() &&
+			       j - pos < amount)
+				j++;
+			if (j - pos == amount) {
+				for (auto k = 0; k < amount; k++) {
+					disk[k + pos] = current;
+					disk[i + k] = -1;
+				}
 				last = j;
 				if (i < last)
 					goto end;
-				disk[j] = disk[i];
-				disk[i] = -1;
 				break;
 			}
 		}
