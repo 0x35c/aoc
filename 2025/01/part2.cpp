@@ -10,10 +10,8 @@ int main(void)
 	int dial = 50;
 	bool has_been_zeroed = false;
 
-	int line = 0;
 	while (1) {
 		int rv = getline(&input, &size, stdin);
-		line++;
 		if (rv < 1)
 			break;
 		int rotation = atoi(&input[1]);

@@ -9,25 +9,18 @@ int main(void)
 	size_t size;
 	int dial = 50;
 
-	int line = 0;
 	while (1) {
 		int rv = getline(&input, &size, stdin);
-		line++;
 		if (rv < 1)
 			break;
 		int rotation = atoi(&input[1]) % 100;
-		if (input[0] == 'L') {
+		if (input[0] == 'L')
 			dial -= rotation;
-			if (dial == 0)
-				result++;
-			else if (dial < 0)
-				dial += 100;
-		} else {
+		else
 			dial += rotation;
-			if (dial == 100)
-				result++;
-			dial %= 100;
-		}
+		dial %= 100;
+		if (dial == 0)
+			result++;
 	}
 	free(input);
 
