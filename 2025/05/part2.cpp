@@ -31,12 +31,9 @@ static void remove_overlaps(std::vector<Range> &ranges)
 					ranges.erase(ranges.begin() + j);
 					continue;
 				}
-				if (is_in_range(ranges[j].min, ranges[i]) &&
-				    ranges[j].max > ranges[i].max)
+				if (is_in_range(ranges[j].min, ranges[i]))
 					ranges[i].max = ranges[j].max;
-				else if (is_in_range(ranges[j].max,
-				                     ranges[i]) &&
-				         ranges[j].min < ranges[i].min)
+				else if (is_in_range(ranges[j].max, ranges[i]))
 					ranges[i].min = ranges[j].min;
 				else
 					continue;
