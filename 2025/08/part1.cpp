@@ -109,16 +109,14 @@ int main(void)
 		groups[i] = i;
 		sizes[i] = 1;
 	}
-	for (auto i = 0; i < 10; i++) {
-		for (auto e : distances) {
-			int a = uwufind(
-			    groups, std::find(boxes.begin(), boxes.end(), e.a) -
-					boxes.begin());
-			int b = uwufind(
-			    groups, std::find(boxes.begin(), boxes.end(), e.b) -
-					boxes.begin());
-			uwunify(groups, sizes, a, b);
-		}
+	for (auto e : distances) {
+		int a =
+		    uwufind(groups, std::find(boxes.begin(), boxes.end(), e.a) -
+		                        boxes.begin());
+		int b =
+		    uwufind(groups, std::find(boxes.begin(), boxes.end(), e.b) -
+		                        boxes.begin());
+		uwunify(groups, sizes, a, b);
 	}
 	std::sort(sizes.begin(), sizes.end(), std::greater<>());
 	for (auto i = 0; i < 3; i++)
