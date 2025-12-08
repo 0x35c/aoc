@@ -9,12 +9,16 @@ int main(void)
 	long result = 0;
 	char *input = NULL;
 	size_t size;
+	int count = 0;
 	std::vector<std::string> map;
 
 	while (1) {
 		int rv = getline(&input, &size, stdin);
 		if (rv < 1)
 			break;
+		count++;
+		if (count % 2 == 0)
+			continue;
 		if (input[rv - 1] == '\n') {
 			input[rv - 1] = 0;
 		}
