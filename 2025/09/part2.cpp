@@ -38,19 +38,65 @@ typedef struct point {
 2,3
 7,3
  */
-
-static bool valid_rectangle(const std::vector<Point> &points, const Point &a,
-                            const Point &b)
+static bool valid_point(const std::vector<Point> &points, const Point &p, int i)
 {
-	// int normX = std::abs(b.x - a.x);
-	// int normY = std::abs(b.y - a.y);
-	Point cornerA = {a.x, b.y};
-	Point cornerB = {b.x, a.y};
-	int count = 0;
-
 	for (auto e : points) {
+		switch (i) {
+		case 0:
+			if (e.x <= p.x && e.y <= p.y)
+				return true;
+			break;
+		case 1:
+			if (e.x >= p.x && e.y <= p.y)
+				return true;
+			break;
+		case 2:
+			if (e.x <= p.x && e.y >= p.y)
+				return true;
+			break;
+		case 3:
+			if (e.x >= p.x && e.y >= p.y)
+				return true;
+			break;
+		}
 	}
 	return false;
+}
+
+static void sort_points(std::vector<Point> &rect)
+{
+	for (auto i = 0; i < 3; i++) {
+		if (rect[i] == rect[i + 1])
+			continue;
+		if (rect[i].x >= rect[i + 1].x && rect[i].y >= rect[i + 1].y) {
+			Point tmp = rect[i];
+			rect[i] = rect[i + 1];
+			rect[i + 1] = tmp;
+			i = -1;
+		}
+	}
+}
+
+static bool valid_rectangle(const std::vector<Point> &points, Point a, Point b)
+{
+	std::vector<Point> rect = {a, b, {a.x, b.y}, {b.x, a.y}};
+	sort_points(rect);
+
+	int count = 0;
+
+	// b is aligned with a on X axis and with d on Y axis
+	// c is aligned with d on X axis and with a on Y axis
+	// a....b
+	// ......
+	// ......
+	// c....d
+	// let's say we want to know if a point
+	// is superior or equals to b/c
+	//
+	for (auto i = 0; i < 4; i++)
+		if (valid_point(points, rect[i], i))
+			count++;
+	return count == 4;
 }
 
 int main(void)
